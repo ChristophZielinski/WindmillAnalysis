@@ -1,6 +1,6 @@
 # WindmillAnalysis
 Jeśli nie ma wirtualnego środowiska to najpierw:<br />
-python -m venv venv<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python -m venv venv<br />
 Jeśli już jest:<br />
 1. Otworzyć terminal w głównym katalogu windmill_analysis<br />
 2. venv\Scripts\activate<br />
