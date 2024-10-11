@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analiza Turbiny Wiatrowej</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form, .file-selection {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="file"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Analiza Wideo Turbiny Wiatrowej</h1>
+    
+    <form id="upload-form">
+        <h2>Przesłanie nowego pliku</h2>
+        <input type="file" id="file" name="file" accept="video/*" required>
+        <button type="submit">Prześlij plik</button>
+    </form>
+
+    <div class="file-selection">
+        <h2>Wybór pliku z biblioteki</h2>
+        <select id="file-select">
+            <option value="">Wybierz plik...</option>
+            <!-- Opcje będą dodawane dynamicznie przez JavaScript -->
+        </select>
+    </div>
+
+    <button id="mit-method" disabled>MIT metoda wzmocnienia ruchu pikseli</button>
+    <button id="cygert-method" disabled>Liczenie obrotów - dr Cygert</button>
+
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function() {
+            let selectedFile = null;
+
+            // Pobierz listę plików z folderu uploads
+            $.get('/list_uploads', function(data) {
+                data.files.forEach(function(file) {
+                    $('#file-select').append($('<option>', {
+                        value: file,
+                        text: file
+                    }));
+                });
+            });
+
+            $('#upload-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#result').text('Plik przesłany pomyślnie: ' + response.path);
+                        selectedFile = response.path;
+                        updateButtonState();
+                    },
+                    error: function(xhr, status, error) {
+                        $('#result').text('Błąd: ' + xhr.responseJSON.error);
+                    }
+                });
+            });
+
+            $('#file-select').change(function() {
+                selectedFile = $(this).val();
+                updateButtonState();
+            });
+
+            function updateButtonState() {
+                if (selectedFile) {
+                    $('#mit-method').prop('disabled', false);
+                    $('#cygert-method').prop('disabled', false);
+                } else {
+                    $('#mit-method').prop('disabled', true);
+                    $('#cygert-method').prop('disabled', true);
+                }
+            }
+
+            $('#mit-method').click(function() {
+                if (selectedFile) {
+                    window.location.href = '/mit_analysis?file=' + encodeURIComponent(selectedFile);
+                }
+            });
+
+            $('#cygert-method').click(function() {
+                if (selectedFile) {
+                    window.location.href = '/cygert_analysis?file=' + encodeURIComponent(selectedFile);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

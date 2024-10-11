@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIT Analiza Turbiny Wiatrowej</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form, .file-selection {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="file"], input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #output-video {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+        .return-button {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .return-button:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <button class="return-button" onclick="window.location.href='/'">Powrót do strony głównej</button>
+
+    <h1>MIT Analiza Wideo Turbiny Wiatrowej</h1>
+    
+    <form id="analysis-form">
+        <h2>Parametry analizy</h2>
+        <label for="file">Wybrane wideo:</label>
+        <input type="text" id="selected-file" readonly>
+        
+        <label for="alpha">Współczynnik wzmocnienia (Alpha):</label>
+        <input type="number" id="alpha" name="alpha" value="50" step="1" required>
+        
+        <label for="fl">Dolna częstotliwość graniczna (Hz):</label>
+        <input type="number" id="fl" name="fl" value="0.2" step="0.01" required>
+        
+        <label for="fh">Górna częstotliwość graniczna (Hz):</label>
+        <input type="number" id="fh" name="fh" value="0.25" step="0.01" required>
+        
+        <label for="fs">Częstotliwość próbkowania (Hz):</label>
+        <input type="number" id="fs" name="fs" value="24" step="1" required>
+        
+        <button type="submit">Analizuj</button>
+    </form>
+
+    <div class="file-selection">
+        <h2>Zmień wideo</h2>
+        <select id="file-select">
+            <option value="">Wybierz plik...</option>
+            <!-- Opcje będą dodawane dynamicznie przez JavaScript -->
+        </select>
+    </div>
+
+    <div id="result"></div>
+    <video id="output-video" controls style="display: none;"></video>
+
+    <script>
+        $(document).ready(function() {
+            let selectedFile = new URLSearchParams(window.location.search).get('file');
+            
+            $('#selected-file').val(selectedFile);
+
+            // Pobierz listę plików z folderu uploads
+            $.get('/list_uploads', function(data) {
+                data.files.forEach(function(file) {
+                    $('#file-select').append($('<option>', {
+                        value: file,
+                        text: file
+                    }));
+                });
+                $('#file-select').val(selectedFile);
+            });
+
+            $('#file-select').change(function() {
+                selectedFile = $(this).val();
+                $('#selected-file').val(selectedFile);
+            });
+
+            $('#analysis-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                formData.append('file', selectedFile);
+                
+                $.ajax({
+                    url: '/analyze',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#result').text('Analiza zakończona pomyślnie!');
+                        if (response.output_file) {
+                            $('#output-video').attr('src', response.output_file).show();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#result').text('Błąd: ' + (xhr.responseJSON ? xhr.responseJSON.error : error));
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+flask
+opencv-python
+numpy
+scipy
+matlabengine
+opencv-contrib-python
+Pillow
+matplotlib
+pyinstaller
