@@ -2,7 +2,7 @@
 **JAK URUCHOMIĆ**<br />
 
 Przy pierwszym uruchomieniu:
-1. Otworzyć terminal w głównym katalogu windmill_analysis<br />
+1. Otworzyć terminal w głównym katalogu windmill-analysis<br />
 2. python -m venv venv<br />
 3. venv\Scripts\activate<br />
 4. pip install -r requirements.txt<br />
