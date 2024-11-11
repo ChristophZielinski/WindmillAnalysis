@@ -1,13 +1,18 @@
 # WindmillAnalysis
 **JAK URUCHOMIĆ**<br />
-Jeśli nie ma wirtualnego środowiska to najpierw:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python -m venv venv<br /><br />
-Jeśli już jest:
+
+Przy pierwszym uruchomieniu:
 1. Otworzyć terminal w głównym katalogu windmill_analysis<br />
-2. venv\Scripts\activate<br />
-3. pip install -r requirements.txt<br />
-4. python run.py<br />
-5. Po zakończeniu ctrl+c i w terminalu deactivate<br />
+2. python -m venv venv<br />
+3. venv\Scripts\activate<br />
+4. pip install -r requirements.txt<br />
+5. python run.py<br />
+6. Po zakończeniu ctrl+c i w terminalu deactivate<br />
+
+Przy kolejnym uruchomieniu
+1. venv\Scripts\activate<br />
+2. python run.py<br />
+3. Po zakończeniu ctrl+c i w terminalu deactivate<br />
 
 **WYMAGANIA(chyba)**<br />
 MATLAB
