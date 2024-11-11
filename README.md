@@ -14,7 +14,7 @@ Przy kolejnym uruchomieniu
 2. python run.py<br />
 3. Po zakończeniu ctrl+c i w terminalu deactivate<br />
 
-**WYMAGANIA(chyba)**<br />
+**WYMAGANIA**<br />
 MATLAB
 * Z zainstalowanym Image Processing Toolbox
 
