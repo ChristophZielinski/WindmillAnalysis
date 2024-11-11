@@ -13,6 +13,9 @@ Jeśli już jest:
 MATLAB
 * Z zainstalowanym Image Processing Toolbox
 
+Python
+* Zainstalowanie najnowszej wersji Python
+
 matlab.engine dla Pythona
 * Do integracji między Pythonem a MATLAB-em
 
