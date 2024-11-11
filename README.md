@@ -10,9 +10,10 @@ Przy pierwszym uruchomieniu:
 6. Po zakończeniu użytkowania zatrzymać program(ctrl+c), oraz napisać w terminalu deactivate<br />
 
 Przy kolejnym uruchomieniu
-1. venv\Scripts\activate<br />
-2. python run.py<br />
-3. Po zakończeniu użytkowania zatrzymać program(ctrl+c), oraz napisać w terminalu deactivate<br />
+1. Otworzyć terminal w głównym katalogu windmill-analysis<br />
+2. venv\Scripts\activate<br />
+3. python run.py<br />
+4. Po zakończeniu użytkowania zatrzymać program(ctrl+c), oraz napisać w terminalu deactivate<br />
 
 **WYMAGANIA**<br />
 MATLAB
